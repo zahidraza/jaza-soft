@@ -1,19 +1,25 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { createStore, applyMiddleware, compose, combineReducers, ReducersMapObject } from 'redux';
+// import * as PropTypes from 'prop-types';
+import { 
+  createStore, 
+  applyMiddleware,  
+  compose, 
+  ReducersMapObject, 
+  Reducer
+} from 'redux';
 import { Provider } from 'react-redux';
 import {createHashHistory, History} from 'history';
-// import createHistory from 'history/createHashHistory';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import { Route, Switch } from 'react-router-dom';
 // import {withContext} from 'recompose';
 
 
-import createAppReducer from './reducer';
+import createAppReducer, {AppState} from './reducer';
 import JAppRoutes from './JAppRoutes';
 // import TranslationProvider from './i18n/TranslationProvider';
 
 import {FnAuthClient, FnRestClient} from './rest/httpClients';
+import { DataType } from './types';
 
 export interface Context {
   authClient?: FnAuthClient
@@ -62,15 +68,12 @@ const JApp = ({
   catchAll
 }: Props) => {
   const routerHistory = history || createHashHistory();
-  const rootReducer = createAppReducer(customReducers, locale);
-  // type AppState = typeof rootReducer;
-
-  let devTools = (window as any).devToolsExtension ? (window as any).devToolsExtension() : (f: any) => f;
-  const store = createStore (
+  const rootReducer: Reducer<AppState<DataType>> = createAppReducer(customReducers, locale);
+  const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const store = createStore<AppState<DataType>> (
     rootReducer, 
-    compose(
-      applyMiddleware(routerMiddleware(routerHistory)),
-      devTools
+    composeEnhancers(
+      applyMiddleware(routerMiddleware(routerHistory))
     )
   );
 

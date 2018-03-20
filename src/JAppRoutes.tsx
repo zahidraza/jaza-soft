@@ -1,8 +1,10 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import * as React from 'react';
+import { connect, MapStateToProps } from 'react-redux';
 
-import { FnAuthClient } from "./rest/httpClients";
-import { declareResources } from "./action/resourceAction";
+import { FnAuthClient } from './rest/httpClients';
+import { declareResources, Payload } from './action/resourceAction';
+import { AppState } from './reducer';
+import { DataType } from './types';
 
 export type componentType = React.ComponentType<any> | Function;
 
@@ -11,7 +13,7 @@ export interface PropsFromDispatch {
 }
 
 export interface PropsFromState {
-  resources: any[];
+  resources: Array<Payload|undefined>;
 }
 
 export interface OwnProps {
@@ -66,9 +68,7 @@ class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDi
   }
 }
 
-const mapStateToProps = (state: any, ownProps: OwnProps) => ({
-  resources: Object.keys(state.jazasoft.resources).map(key => state.jazasoft.resources[key].props)
-});
+
 
 // export default compose(
 //   getContext<Context>({
@@ -85,9 +85,12 @@ const mapStateToProps = (state: any, ownProps: OwnProps) => ({
 //   declareResources
 // }))(JAppRoutes);
 
+const mapStateToProps: MapStateToProps<PropsFromState, OwnProps, AppState<DataType>> = (state: AppState<DataType>, ownProps: OwnProps): PropsFromState => ({
+  resources: Object.keys(state.jazasoft.resources).map(key => state.jazasoft.resources[key].props)
+});
 
 
-const connectedCmp = connect<PropsFromState, PropsFromDispatch, OwnProps>(mapStateToProps, {
+const connectedCmp = connect<PropsFromState, PropsFromDispatch, OwnProps, AppState<DataType>>(mapStateToProps, {
   declareResources
 })(JAppRoutes);
 

@@ -1,4 +1,4 @@
-import { AnyAction, Reducer } from 'redux'
+import { AnyAction } from 'redux'
 
 import * as ResourceActions from '../../../action/resourceAction'
 import createDataReducer, {

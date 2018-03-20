@@ -1,13 +1,15 @@
 import * as FetchActions from '../../action/fetchAction'
 import * as AuthActions from '../../action/authAction'
 
-type AuthAction =
+export type State = number
+
+export type AuthAction =
   | AuthActions.LoginProgressAction
   | AuthActions.LoginSuccessAction
   | AuthActions.LoginFailureAction
 
 export default (
-  previousState = 0,
+  previousState: State = 0,
   { type }: FetchActions.All | AuthAction
 ): number => {
   switch (type) {

@@ -1,12 +1,21 @@
 import { combineReducers, AnyAction } from 'redux'
-import resources, { getResources as innerGetResources } from './resource'
-import loading from './loading'
-import notification from './notification'
+import resources, { State as ResourceState } from './resource'
+import loading, { State as LoadingState } from './loading'
+import notification, { State as NfnState } from './notification'
 // import references from './references';
-import saving from './saving'
-import ui from './ui'
+import saving, { State as SavingState } from './saving'
+import ui, { State as UiState } from './ui'
+import { DataType } from '../../types'
 
-export default combineReducers({
+export interface State<T extends DataType> {
+  resources: ResourceState<T>
+  loading: LoadingState
+  notification: NfnState
+  saving: SavingState
+  ui: UiState
+}
+
+export default combineReducers<State<DataType>>({
   resources,
   loading,
   notification,

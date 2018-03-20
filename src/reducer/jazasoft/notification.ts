@@ -1,19 +1,19 @@
 import * as NfnActions from '../../action/notificationAction'
 
-export interface NfnState {
+export interface State {
   text: string
   type: NfnActions.NfnTypes
 }
 
-const defaultState: NfnState = {
+const defaultState: State = {
   text: '',
   type: 'info' // one of 'info', 'confirm', 'warning'
 }
 
 export default (
-  previousState: NfnState = defaultState,
+  previousState: State = defaultState,
   action: NfnActions.All
-): NfnState => {
+): State => {
   switch (action.type) {
     case NfnActions.SHOW_NOTIFICATION:
       return { text: action.payload.text, type: action.payload.type }
