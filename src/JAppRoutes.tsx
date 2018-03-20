@@ -1,10 +1,11 @@
-import * as React from 'react';
-import { connect, MapStateToProps } from 'react-redux';
+import * as React from "react";
+import * as PropTypes from "prop-types";
+import { connect, MapStateToProps } from "react-redux";
 
-import { FnAuthClient } from './rest/httpClients';
-import { declareResources, Payload } from './action/resourceAction';
-import { AppState } from './reducer';
-import { DataType } from './types';
+import { FnAuthClient } from "./rest/httpClients";
+import { declareResources, Payload } from "./action/resourceAction";
+import { AppState } from "./reducer";
+import { DataType } from "./types";
 
 export type componentType = React.ComponentType<any> | Function;
 
@@ -13,7 +14,7 @@ export interface PropsFromDispatch {
 }
 
 export interface PropsFromState {
-  resources: Array<Payload|undefined>;
+  resources: Array<Payload | undefined>;
 }
 
 export interface OwnProps {
@@ -33,6 +34,11 @@ export interface OwnProps {
 // export type Props = OwnProps & PropsFromState & PropsFromDispatch;
 
 class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDispatch, {}> {
+  static contextTypes = {
+    authClient: PropTypes.func,
+    appName: PropTypes.string
+  };
+
   componentDidMount() {
     this.initializeResources(this.props.children);
   }
@@ -68,32 +74,20 @@ class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDi
   }
 }
 
-
-
-// export default compose(
-//   getContext<Context>({
-//     authClient: PropTypes.func
-//   }),
-//   connect<PropsFromState, PropsFromDispatch, OwnProps>(mapStateToProps, {
-//     declareResources
-//   })
-// )(JAppRoutes);
-
-// export default getContext<Context>({
-//   authClient: PropTypes.func
-// })(connect<PropsFromState, PropsFromDispatch, OwnProps>(mapStateToProps, {
-//   declareResources
-// }))(JAppRoutes);
-
-const mapStateToProps: MapStateToProps<PropsFromState, OwnProps, AppState<DataType>> = (state: AppState<DataType>, ownProps: OwnProps): PropsFromState => ({
+const mapStateToProps: MapStateToProps<PropsFromState, OwnProps, AppState<DataType>> = (
+  state: AppState<DataType>,
+  ownProps: OwnProps
+): PropsFromState => ({
   resources: Object.keys(state.jazasoft.resources).map(key => state.jazasoft.resources[key].props)
 });
 
-
-const connectedCmp = connect<PropsFromState, PropsFromDispatch, OwnProps, AppState<DataType>>(mapStateToProps, {
+const connectedCmp = connect<
+  PropsFromState,
+  PropsFromDispatch,
+  OwnProps,
+  AppState<DataType>
+>(mapStateToProps, {
   declareResources
 })(JAppRoutes);
 
 export default connectedCmp;
-
-// export default getContext<Context>({ authClient: PropTypes.func })(connectedCmp);

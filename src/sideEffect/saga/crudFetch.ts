@@ -4,9 +4,12 @@ import {
   call,
   cancelled,
   takeEvery,
-  takeLatest
+  takeLatest,
+  GenericAllEffect,
+  AllEffect
 } from 'redux-saga/effects'
 
+import { Action } from 'redux'
 import * as FetchActions from '../../action/fetchAction'
 import * as CrudActions from '../../action/crudAction'
 import { FnRestClient } from '../../rest/httpClients'
@@ -61,20 +64,14 @@ const crudFetch = (restClient: FnRestClient) => {
 
   return function* watchCrudFetch() {
     yield all([
-      takeLatest(
-        (action: CrudActions.CrudFetchActions) =>
-          action.meta && action.meta.fetch && action.meta.cancelPrevious
-            ? true
-            : false,
-        handleFetch
-      ),
-      takeEvery(
-        (action: CrudActions.CrudFetchActions) =>
-          action.meta && action.meta.fetch && !action.meta.cancelPrevious
-            ? true
-            : false,
-        handleFetch
-      )
+      takeLatest((action: Action) => {
+        const { meta } = action as CrudActions.CrudFetchActions
+        return meta && meta.fetch && meta.cancelPrevious
+      }, handleFetch),
+      takeEvery((action: Action) => {
+        const { meta } = action as CrudActions.CrudFetchActions
+        return meta && meta.fetch && !meta.cancelPrevious
+      }, handleFetch)
     ])
   }
 }

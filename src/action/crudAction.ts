@@ -1,4 +1,5 @@
 import { AxiosRequestConfig } from 'axios'
+import { RestType } from '../constants'
 
 // export interface CrudMeta {
 //   resource: string,
@@ -10,7 +11,7 @@ export interface Action {
   options: AxiosRequestConfig
   meta: {
     resource: string
-    fetch: string
+    fetch: RestType
     cancelPrevious: boolean
     redirectTo?: string
   }

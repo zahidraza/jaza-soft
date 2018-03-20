@@ -1,5 +1,13 @@
-import JApp from './JApp';
+import JApp from "./JApp";
+// import { createOAuth2Client, createRestClient } from "./rest";
+import Resource from "./Resource";
 
+export { Resource };
 
-export {default as Resource} from './Resource';
+// export {
+//   createOAuth2Client,
+//   createRestClient,
+//   Resource
+// };
+
 export default JApp;

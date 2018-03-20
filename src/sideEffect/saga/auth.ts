@@ -1,4 +1,11 @@
-import { all, put, call, takeEvery } from 'redux-saga/effects'
+import {
+  all,
+  put,
+  call,
+  takeEvery,
+  AllEffect,
+  GenericAllEffect
+} from 'redux-saga/effects'
 import { push, replace } from 'react-router-redux'
 
 import {
