@@ -9,12 +9,12 @@ const pkg = require('./package.json')
 const libraryName = 'jaza-soft'
 
 export default {
-  input: `src/${libraryName}.ts`,
+  input: `src/${libraryName}.tsx`,
   output: [
-    { file: pkg.main, name: camelCase(libraryName), format: 'umd' },
-    { file: pkg.module, format: 'es' },
+    { file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true },
+    { file: pkg.module, format: 'es', sourcemap: true},
   ],
-  sourcemap: true,
+  
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [],
   watch: {
@@ -24,7 +24,12 @@ export default {
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    commonjs(),
+    commonjs({
+      include: 'node_modules/**',
+      namedExports: {
+        'node_modules/react/index.js': ['Component', 'PureComponent', 'Children', 'createElement']
+      }
+    }),
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
