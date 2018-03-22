@@ -10,7 +10,10 @@ const defaultState: State = {
   viewVersion: 0
 }
 
-export default (previousState: State = defaultState, action: UIActions.All) => {
+export default (
+  previousState: State = defaultState,
+  action: UIActions.UiActions
+) => {
   switch (action.type) {
     case UIActions.TOGGLE_SIDEBAR:
       return {

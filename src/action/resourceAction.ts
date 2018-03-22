@@ -15,5 +15,3 @@ export const declareResources = (
   type: DECLARE_RESOURCES,
   payload: resources
 })
-
-export type All = DeclareResourceAction

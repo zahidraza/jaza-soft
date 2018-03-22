@@ -1,9 +1,11 @@
-import resolve from "rollup-plugin-node-resolve";
-import commonjs from "rollup-plugin-commonjs";
+import commonjs from 'rollup-plugin-commonjs';
+import nodeResolve from 'rollup-plugin-node-resolve';
+import globals from 'rollup-plugin-node-globals';
+import builtins from 'rollup-plugin-node-builtins';
+import json from 'rollup-plugin-json';
 import sourceMaps from "rollup-plugin-sourcemaps";
 import camelCase from "lodash.camelcase";
 import typescript from "rollup-plugin-typescript2";
-import json from "rollup-plugin-json";
 
 const pkg = require("./package.json");
 
@@ -22,11 +24,10 @@ export default {
     include: "src/**"
   },
   plugins: [
-    // Compile TypeScript files
-    typescript({ useTsconfigDeclarationDir: true }),
-    // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
+    builtins(),
+    nodeResolve({ jsnext: true, main: true, browser: true }),
     commonjs({
-      include: "node_modules/**",
+      exclude: ['node_modules/rollup-plugin-node-globals/**'],
       namedExports: {
         "node_modules/react/index.js": [
           "Component",
@@ -39,13 +40,13 @@ export default {
         "node_modules/redux-saga/effects": ["AllEffect", "GenericAllEffect"]
       }
     }),
-    // Allow node_modules resolution, so you can use 'external' to control
-    // which external modules to include in the bundle
-    // https://github.com/rollup/rollup-plugin-node-resolve#usage
-    resolve(),
+    globals(),
+    json(),
+
+    // Compile TypeScript files
+    typescript({ useTsconfigDeclarationDir: true }),
 
     // Resolve source maps to the original source
-    sourceMaps(),
-    json()
+    sourceMaps()
   ]
 };

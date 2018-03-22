@@ -2,15 +2,12 @@ import { AuthType, RestType } from '../constants'
 import { Param, AuthParam, DataType } from '../types'
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 
-export type FnAuthClient = (
-  type: AuthType,
-  params?: AuthParam | AxiosError
-) => Promise<any>
+export type FnAuthClient = (type: AuthType, params?: AuthParam) => Promise<any>
 
 export const createOAuth2Client = (
   oauthBaseUrl: string,
   basicAuthorization: string
-): FnAuthClient => (type: AuthType, params?: AuthParam | AxiosError) => {
+): FnAuthClient => (type: AuthType, params?: AuthParam) => {
   if (type === AuthType.AUTH_LOGIN) {
     const payload = params as Param
     if (!payload.username || !payload.password) {

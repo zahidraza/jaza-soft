@@ -35,11 +35,11 @@ export interface OwnProps {
 
 class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDispatch, {}> {
   static contextTypes = {
-    authClient: PropTypes.func,
-    appName: PropTypes.string
+    authClient: PropTypes.func
   };
 
   componentDidMount() {
+    console.log(this.context.authClient);
     this.initializeResources(this.props.children);
   }
 

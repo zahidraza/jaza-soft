@@ -24,7 +24,7 @@ export interface RefreshViewAction {
 }
 export const refreshView = (): RefreshViewAction => ({ type: REFRESH_VIEW })
 
-export type All =
+export type UiActions =
   | ToggleSidebarAction
   | SidebarVisibiltyAction
   | RefreshViewAction

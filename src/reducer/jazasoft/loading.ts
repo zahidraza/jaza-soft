@@ -10,7 +10,7 @@ export type AuthAction =
 
 export default (
   previousState: State = 0,
-  { type }: FetchActions.All | AuthAction
+  { type }: FetchActions.FetchActions | AuthAction
 ): number => {
   switch (type) {
     case FetchActions.FETCH_START:

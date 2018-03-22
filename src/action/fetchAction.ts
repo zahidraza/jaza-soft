@@ -19,7 +19,7 @@ export interface FetchCancelAction {
   type: typeof FETCH_CANCEL
 }
 
-export type All =
+export type FetchActions =
   | FetchStartAction
   | FetchEndAction
   | FetchErrorAction

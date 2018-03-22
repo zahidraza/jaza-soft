@@ -12,7 +12,7 @@ const defaultState: State = {
 
 export default (
   previousState: State = defaultState,
-  action: NfnActions.All
+  action: NfnActions.NfnActions
 ): State => {
   switch (action.type) {
     case NfnActions.SHOW_NOTIFICATION:

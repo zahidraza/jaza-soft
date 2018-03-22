@@ -24,4 +24,4 @@ export const hideNotification = (): HideNotificationAction => ({
   type: HIDE_NOTIFICATION
 })
 
-export type All = ShowNotificationAction | HideNotificationAction
+export type NfnActions = ShowNotificationAction | HideNotificationAction
