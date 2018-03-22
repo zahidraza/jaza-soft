@@ -74,6 +74,7 @@
     "mapCoverage": true
   },
   "dependencies": {
+    "@types/node-polyglot": "^0.4.30",
     "axios": "^0.18.0",
     "history": "^4.7.2",
     "lodash.pickby": "^4.6.0",

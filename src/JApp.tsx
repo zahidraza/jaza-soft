@@ -9,7 +9,7 @@ import { withContext } from "recompose";
 
 import createAppReducer, { AppState } from "./reducer";
 import JAppRoutes from "./JAppRoutes";
-// import TranslationProvider from './i18n/TranslationProvider';
+import TranslationProvider from "./i18n/TranslationProvider";
 
 import { FnAuthClient, FnRestClient } from "./rest";
 import { DataType } from "./types";
@@ -43,7 +43,7 @@ export interface Props {
 }
 
 class JApp extends React.Component<Props, {}> {
-  render() {
+  render(): JSX.Element {
     const {
       appName,
       restClient,
@@ -76,35 +76,37 @@ class JApp extends React.Component<Props, {}> {
 
     return (
       <Provider store={store}>
-        <ConnectedRouter history={routerHistory}>
-          <Switch>
-            {loginPage && (
-              <Route
-                exact
-                path="/login"
-                render={({ location }) =>
-                  React.createElement(loginPage, { location, appName, theme })}
-              />
-            )}
-            <Route
-              path="/"
-              render={routeProps => (
-                <JAppRoutes
-                  dashboard={dashboard}
-                  appLayout={appLayout}
-                  menu={menu}
-                  logout={logout}
-                  theme={theme}
-                  appName={appName}
-                  catchAll={catchAll}
-                  {...routeProps}
-                >
-                  {children}
-                </JAppRoutes>
+        <TranslationProvider messages={messages}>
+          <ConnectedRouter history={routerHistory}>
+            <Switch>
+              {loginPage && (
+                <Route
+                  exact
+                  path="/login"
+                  render={({ location }) =>
+                    React.createElement(loginPage, { location, appName, theme })}
+                />
               )}
-            />
-          </Switch>
-        </ConnectedRouter>
+              <Route
+                path="/"
+                render={routeProps => (
+                  <JAppRoutes
+                    dashboard={dashboard}
+                    appLayout={appLayout}
+                    menu={menu}
+                    logout={logout}
+                    theme={theme}
+                    appName={appName}
+                    catchAll={catchAll}
+                    {...routeProps}
+                  >
+                    {children}
+                  </JAppRoutes>
+                )}
+              />
+            </Switch>
+          </ConnectedRouter>
+        </TranslationProvider>
       </Provider>
     );
   }
