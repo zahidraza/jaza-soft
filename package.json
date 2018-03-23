@@ -76,9 +76,11 @@
   "dependencies": {
     "@types/node-polyglot": "^0.4.30",
     "axios": "^0.18.0",
+    "classnames": "^2.2.5",
     "history": "^4.7.2",
     "lodash.pickby": "^4.6.0",
     "material-ui": "^1.0.0-beta.37",
+    "material-ui-icons": "^1.0.0-beta.36",
     "node-polyglot": "^2.2.2",
     "prop-types": "^15.6.1",
     "query-string": "^6.0.0",
@@ -94,6 +96,7 @@
     "reselect": "^3.0.1"
   },
   "devDependencies": {
+    "@types/classnames": "^2.2.3",
     "@types/jest": "^22.0.0",
     "@types/lodash.pickby": "^4.6.3",
     "@types/node": "^9.3.0",

@@ -17,3 +17,9 @@ export interface DataType {
   id: number
   fetchedAt: Date
 }
+
+export interface MenuItems {
+  name: string
+  icon?: any
+  nestedMenuItems?: MenuItems[]
+}

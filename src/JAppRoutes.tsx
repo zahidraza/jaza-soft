@@ -1,37 +1,38 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import { connect, MapStateToProps } from "react-redux";
+import {Switch, Route} from "react-router-dom";
 
 import { FnAuthClient } from "./rest/httpClients";
 import { declareResources, Payload } from "./action/resourceAction";
 import { AppState } from "./reducer";
-import { DataType } from "./types";
+import { DataType, MenuItems } from "./types";
+import {Props as ResourceProps} from "./Resource";
 
-export type componentType = React.ComponentType<any> | Function;
 
+import DefaultLayout from "./mui/layout/Layout";
+
+
+///////  Declarations ////////////
 export interface PropsFromDispatch {
   declareResources: Function;
 }
-
 export interface PropsFromState {
   resources: Array<Payload | undefined>;
 }
-
 export interface OwnProps {
-  dashboard?: componentType;
-  appLayout?: componentType;
-  menu?: componentType;
+  dashboard?: React.ComponentType<any>;
+  appLayout?: React.ComponentType<any>;
+  menu?: React.ComponentType<any>;
   authClient?: FnAuthClient;
   customRoutes?: any[];
   resources?: any[];
-  theme?: string;
+  theme?: object;
   appName?: string;
   logout?: string | Function | React.ReactNode;
   children?: Function | React.ReactNode;
-  catchAll?: componentType;
+  catchAll?: React.ComponentType<any>;
 }
-
-// export type Props = OwnProps & PropsFromState & PropsFromDispatch;
 
 class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDispatch, {}> {
   static contextTypes = {
@@ -61,16 +62,88 @@ class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDi
     //   this.props.declareResources(resources.filter(r => r));
     // }
 
-    const resources =
-      React.Children.map(
-        children,
-        child => (child ? (child as React.ReactElement<any>).props : false)
-      ) || [];
-    this.props.declareResources(resources.filter(r => r));
+    let resources: any = [];
+    React.Children.forEach(children, child => {
+      if (child) {
+        const c = child as React.ReactElement<any>;
+        if (React.Children.count(c.props.children) === 0) {
+          resources.push(c.props);
+        } else {
+          const nestedProps = React.Children.map(
+            c.props.children, 
+            child2 => (child2 ? (child2 as React.ReactElement<any>).props: false)
+          );
+          resources = resources.concat(nestedProps);
+        }
+      }
+    });
+    this.props.declareResources(resources);
   }
 
-  render() {
-    return <div>Hello</div>;
+  menuItems = (children: Function | React.ReactNode): MenuItems[] => {
+    let menuItems: MenuItems[] = [];
+    React.Children.forEach(children, child => {
+      if (child) {
+        const c = child as React.ReactElement<any>;
+        if (React.Children.count(c.props.children) === 0) {
+          if (c.props.list) {
+            menuItems.push({name: c.props.name, icon: c.props.icon});
+          }
+        } else {
+          const nestedMenuItems: MenuItems[] = []
+          React.Children.forEach(
+            c.props.children, 
+            child2 => {
+              if (child2) {
+                const c2 = child2 as React.ReactElement<any>;
+                if (c2.props.list) {
+                  nestedMenuItems.push({name: c2.props.name, icon: c2.props.icon});
+                }
+              }
+            }
+          );
+          menuItems.push({name: c.props.name, nestedMenuItems});
+        }
+      }
+    });
+    return menuItems;
+  }
+
+
+  render(): JSX.Element {
+    const {
+      appLayout = DefaultLayout,
+      appName,
+      dashboard,
+      menu,
+      logout,
+      resources = [],
+      theme,
+      customRoutes,
+      catchAll,
+      children
+    } = this.props;
+
+    const menuItems = this.menuItems(children);
+
+    return (
+      <Switch>
+        
+        <Route
+          path="/"
+          render={routeProps => React.createElement(appLayout, {
+            dashboard,
+            logout,
+            menu,
+            menuItems,
+            catchAll,
+            theme,
+            appName,
+            customRoutes
+          })}
+        />
+      </Switch>
+    );
   }
 }
 

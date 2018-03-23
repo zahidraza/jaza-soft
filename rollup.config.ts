@@ -37,7 +37,9 @@ export default {
           "createFactory"
         ],
         "node_modules/prop-types/index.js": ["func", "string", "bool", "number", "object"],
-        "node_modules/redux-saga/effects": ["AllEffect", "GenericAllEffect"]
+        "node_modules/redux-saga/effects": ["AllEffect", "GenericAllEffect"],
+        "node_modules/material-ui/styles/index.js": ["createMuiTheme","MuiThemeProvider", "withStyles", "WithStyles","Theme"],
+        "node_modules/material-ui/List/index.js": ["ListItem", "ListItemIcon", "ListItemText"]
       }
     }),
     globals(),

@@ -2,12 +2,15 @@ import * as React from "react";
 
 export interface Props {
   name: string;
+  reducerReq?: boolean;
+  referenceResource?: string;
+  children?: React.ReactElement<Props>[] | React.ReactElement<Props>;
   list?: React.ComponentType<any>;
   create?: React.ComponentType<any>;
   edit?: React.ComponentType<any>;
   view?: React.ComponentType<any>;
   delete?: React.ComponentType<any>;
-  icon?: React.ComponentType<any>;
+  icon?: JSX.Element;
 }
 
 const Resource = (props: Props) => {

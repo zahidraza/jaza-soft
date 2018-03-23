@@ -24,7 +24,9 @@ export default (
   action: Action
 ): State<DataType> => {
   if (action.type === ResourceActions.DECLARE_RESOURCES) {
-    const newState = (action as ResourceActions.DeclareResourceAction).payload.reduce(
+    let payload = (action as ResourceActions.DeclareResourceAction).payload
+    payload = payload.filter(e => e.reducerReq !== false)
+    const newState = payload.reduce(
       (acc, resource) => ({
         ...acc,
         [resource.name]: {

@@ -2,6 +2,9 @@ export const DECLARE_RESOURCES = 'JS/DECLARE_RESOURCES'
 
 export interface Payload {
   name: string
+  reducerReq?: boolean
+  referenceResource?: string
+  icon?: JSX.Element
 }
 
 export interface DeclareResourceAction {

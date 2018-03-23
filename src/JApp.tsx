@@ -27,19 +27,19 @@ export interface Props {
   authClient?: FnAuthClient;
   history?: History;
   locale?: string;
-  theme?: string;
+  theme?: object;
   messages?: object;
   customReducers?: ReducersMapObject;
   initialState?: object;
   customSagas?: any;
   customRoutes?: any;
   children?: Function | React.ReactNode;
-  appLayout?: componentType;
-  dashboard?: componentType;
-  menu?: componentType;
-  loginPage?: React.ComponentClass<any> | React.StatelessComponent<any>;
+  appLayout?: React.ComponentType<any>;
+  dashboard?: React.ComponentType<any>;
+  menu?: React.ComponentType<any>;
+  loginPage?: React.ComponentType<any>;
   logout?: string | Function | React.ReactNode;
-  catchAll?: componentType;
+  catchAll?: React.ComponentType<any>;
 }
 
 class JApp extends React.Component<Props, {}> {
@@ -50,7 +50,7 @@ class JApp extends React.Component<Props, {}> {
       authClient,
       history,
       locale = "en",
-      theme = "light",
+      theme = {},
       messages = {},
       customReducers = {},
       customRoutes = [],
