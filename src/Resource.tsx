@@ -9,7 +9,7 @@ export interface Props {
   create?: React.ComponentType<any>;
   edit?: React.ComponentType<any>;
   view?: React.ComponentType<any>;
-  delete?: React.ComponentType<any>;
+  remove?: React.ComponentType<any>;
   icon?: JSX.Element;
 }
 

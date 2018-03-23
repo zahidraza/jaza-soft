@@ -21,7 +21,8 @@ import {
   withStyles,
   WithStyles,
   Theme,
-  StyledComponentProps
+  StyledComponentProps,
+  StyleRules
 } from "material-ui/styles";
 
 import Menu from "./Menu";
@@ -30,12 +31,29 @@ import {MenuItems} from "../../types";
 
 const drawerWidth = 240;
 
-const styles = (theme: Theme) => ({
+const style: StyleRules<'someClass' | 'root'> = {
+  someClass: {
+      flexWrap: 'wrap',
+      position: 'relative'
+  },
   root: {
     flexGrow: 1
   },
+};
+
+export type styleRules = StyleRules<"root" | "appBar" | "appBarShift" | "appBarShift-left" | "menuButton" | "hide" | "drawerPaper" | "drawerHeader" | "content" | "content-left" | "contentShift" | "contentShift-left" >;
+
+const styles = (theme: Theme): styleRules => ({
+  root: {
+    flexGrow: 1,
+    zIndex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
+    width: '100%',
+  },
   appBar: {
-    // position: "absolute",
+    position: "absolute",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -59,15 +77,36 @@ const styles = (theme: Theme) => ({
     display: 'none',
   },
   drawerPaper: {
-    // position: 'relative',
+    position: 'relative',
     width: drawerWidth,
   },
   drawerHeader: {
     display: 'flex',
-    // alignItems: 'center',
-    // justifyContent: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  'content-left': {
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  'contentShift-left': {
+    marginLeft: 0,
   },
 });
 
@@ -89,7 +128,7 @@ export interface OwnProps {
 }
 
 export type PropsWithStyles = OwnProps &
-  WithStyles<"root" | "appBar" | "appBarShift" | "appBarShift-left" | "menuButton" | "hide" | "drawerPaper" | "drawerHeader" >;
+  WithStyles<"root" | "appBar" | "appBarShift" | "appBarShift-left" | "menuButton" | "hide" | "drawerPaper" | "drawerHeader" | "content" | "content-left" | "contentShift" | "contentShift-left" >;
 
 class Layout extends React.Component<PropsWithStyles, State> {
   state = {
@@ -105,7 +144,7 @@ class Layout extends React.Component<PropsWithStyles, State> {
   };
 
   render() {
-    const { theme, classes, appName, menuItems } = this.props;
+    const { theme, classes, appName, menuItems, children } = this.props;
     const {open} = this.state;
 
     const muiTheme = createMuiTheme(theme);
@@ -126,30 +165,13 @@ class Layout extends React.Component<PropsWithStyles, State> {
         </div>
         <Divider />
         <Menu menuItems={menuItems} />
-        {/* <List>
-          <ListItem button>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Inbox" />
-          </ListItem>
-        </List>
-        <Divider />
-        <List>
-          <ListItem button>
-            <ListItemIcon>
-              <DraftsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Drafts" />
-          </ListItem>
-        </List> */}
       </Drawer>
     );
 
     return (
       <MuiThemeProvider theme={muiTheme}>
-        <div>
-          <AppBar position="absolute"
+        <div className={classes.root} >
+          <AppBar 
             className={classNames(classes.appBar, {
               [classes.appBarShift]: open,
               [classes['appBarShift-left']]: open
@@ -170,9 +192,15 @@ class Layout extends React.Component<PropsWithStyles, State> {
             </Toolbar>
           </AppBar>
           {drawer}
-          <div>
-            Hello World
-          </div>
+          <main
+            className={classNames(classes.content, classes[`content-left`], {
+              [classes.contentShift]: open,
+              [classes[`contentShift-left`]]: open,
+            })}
+          >
+            <div className={classes.drawerHeader} />
+            {children}
+          </main>
         </div>
       </MuiThemeProvider>
     );

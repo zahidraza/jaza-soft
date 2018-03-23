@@ -49,7 +49,8 @@ const authSaga = (authClient: FnAuthClient) => {
       }
       case AuthActions.USER_CHECK: {
         try {
-          yield call(authClient, AuthType.AUTH_CHECK)
+          const userCheckAction = action as AuthActions.UserCheckAction
+          yield call(authClient, AuthType.AUTH_CHECK, userCheckAction.payload)
         } catch (e) {
           yield call(authClient, AuthType.AUTH_LOGOUT)
           yield put(

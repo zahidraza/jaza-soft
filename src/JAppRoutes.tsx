@@ -11,14 +11,15 @@ import {Props as ResourceProps} from "./Resource";
 
 
 import DefaultLayout from "./mui/layout/Layout";
+import CrudRoute from "./CrudRoute";
 
 
 ///////  Declarations ////////////
 export interface PropsFromDispatch {
   declareResources: Function;
 }
-export interface PropsFromState {
-  resources: Array<Payload | undefined>;
+export interface State {
+  resources?: ResourceProps[];
 }
 export interface OwnProps {
   dashboard?: React.ComponentType<any>;
@@ -26,7 +27,6 @@ export interface OwnProps {
   menu?: React.ComponentType<any>;
   authClient?: FnAuthClient;
   customRoutes?: any[];
-  resources?: any[];
   theme?: object;
   appName?: string;
   logout?: string | Function | React.ReactNode;
@@ -34,13 +34,33 @@ export interface OwnProps {
   catchAll?: React.ComponentType<any>;
 }
 
-class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDispatch, {}> {
+class JAppRoutes extends React.Component<OwnProps & PropsFromDispatch, State> {
   static contextTypes = {
     authClient: PropTypes.func
   };
 
+  componentWillMount() {
+    const {children} = this.props;
+    let resources: ResourceProps[] = [];
+    React.Children.forEach(children, child => {
+      if (child) {
+        const c = child as React.ReactElement<any>;
+        if (React.Children.count(c.props.children) === 0) {
+          resources.push(c.props);
+        } else {
+          const nestedProps = React.Children.map(
+            c.props.children, 
+            child2 => (child2 ? (child2 as React.ReactElement<any>).props: false)
+          );
+          resources = resources.concat(nestedProps.map((r: any) => ({...r, name: c.props.name + '/' + r.name})));
+        }
+      }
+    });
+    this.setState({resources});
+  }
+  
+
   componentDidMount() {
-    console.log(this.context.authClient);
     this.initializeResources(this.props.children);
   }
 
@@ -61,7 +81,6 @@ class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDi
     //   const resources = React.Children.map(children, child => (child ? child.props : false)) || [];
     //   this.props.declareResources(resources.filter(r => r));
     // }
-
     let resources: any = [];
     React.Children.forEach(children, child => {
       if (child) {
@@ -117,12 +136,13 @@ class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDi
       dashboard,
       menu,
       logout,
-      resources = [],
       theme,
       customRoutes,
       catchAll,
       children
     } = this.props;
+
+    const {resources} = this.state;
 
     const menuItems = this.menuItems(children);
 
@@ -139,7 +159,27 @@ class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDi
             catchAll,
             theme,
             appName,
-            customRoutes
+            customRoutes,
+            children: (
+              <Switch>
+                {resources && resources.map(resource => (
+                  <Route
+                    path={`/${resource.name}`}
+                    key={resource.name}
+                    render={() => (
+                      <CrudRoute
+                        resource={resource.name}
+                        list={resource.list}
+                        create={resource.create}
+                        edit={resource.edit}
+                        view={resource.view}
+                        remove={resource.remove}
+                      />
+                    )}
+                  />
+                ))}
+              </Switch>
+            )
           })}
         />
       </Switch>
@@ -147,19 +187,14 @@ class JAppRoutes extends React.Component<OwnProps & PropsFromState & PropsFromDi
   }
 }
 
-const mapStateToProps: MapStateToProps<PropsFromState, OwnProps, AppState<DataType>> = (
-  state: AppState<DataType>,
-  ownProps: OwnProps
-): PropsFromState => ({
-  resources: Object.keys(state.jazasoft.resources).map(key => state.jazasoft.resources[key].props)
-});
+// const mapStateToProps: MapStateToProps<PropsFromState, OwnProps, AppState<DataType>> = (
+//   state: AppState<DataType>,
+//   ownProps: OwnProps
+// ): PropsFromState => ({
+//   resources: Object.keys(state.jazasoft.resources).map(key => state.jazasoft.resources[key].props)
+// });
 
-const connectedCmp = connect<
-  PropsFromState,
-  PropsFromDispatch,
-  OwnProps,
-  AppState<DataType>
->(mapStateToProps, {
+const connectedCmp = connect< {}, PropsFromDispatch, OwnProps, AppState<DataType>>(null, {
   declareResources
 })(JAppRoutes);
 

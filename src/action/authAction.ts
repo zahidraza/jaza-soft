@@ -38,13 +38,23 @@ export const login = (
  */
 export const USER_CHECK = 'JS/USER_CHECK'
 
+export interface UserCheckParam {
+  resource: string // Base Resource Path e.g 'order'
+  route: string // Relative Path of Page e.g. 'list'
+}
+
 export interface UserCheckAction {
   type: typeof USER_CHECK
+  payload: UserCheckParam
   meta: { auth: boolean; pathName: string }
 }
 
-export const userCheck = (pathName: string): UserCheckAction => ({
+export const userCheck = (
+  payload: UserCheckParam,
+  pathName: string
+): UserCheckAction => ({
   type: USER_CHECK,
+  payload,
   meta: { auth: true, pathName }
 })
 

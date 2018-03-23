@@ -6,10 +6,13 @@ import { createHashHistory, History } from "history";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { Route, Switch } from "react-router-dom";
 import { withContext } from "recompose";
+import { all, fork } from 'redux-saga/effects';
+import createSagaMiddleware from 'redux-saga';
 
 import createAppReducer, { AppState } from "./reducer";
 import JAppRoutes from "./JAppRoutes";
 import TranslationProvider from "./i18n/TranslationProvider";
+import JAppSaga from "./sideEffect/saga";
 
 import { FnAuthClient, FnRestClient } from "./rest";
 import { DataType } from "./types";
@@ -23,8 +26,8 @@ export type componentType = React.ComponentType<any> | Function;
 
 export interface Props {
   appName: string;
-  restClient?: FnRestClient;
-  authClient?: FnAuthClient;
+  restClient: FnRestClient;
+  authClient: FnAuthClient;
   history?: History;
   locale?: string;
   theme?: object;
@@ -64,14 +67,20 @@ class JApp extends React.Component<Props, {}> {
       catchAll
     } = this.props;
 
+    const saga = function* rootSaga() {
+      yield all([JAppSaga(restClient, authClient), ...customSagas].map(fork));
+    };
+    const sagaMiddleware = createSagaMiddleware();
+
     const routerHistory = history || createHashHistory();
     const rootReducer: Reducer<AppState<DataType>> = createAppReducer(customReducers, locale);
     const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     const store = createStore<AppState<DataType>>(
       rootReducer,
-      composeEnhancers(applyMiddleware(routerMiddleware(routerHistory)))
+      composeEnhancers(applyMiddleware(routerMiddleware(routerHistory), sagaMiddleware))
     );
 
+    sagaMiddleware.run(saga);
     // const logoutButton = authClient ? React.createElement(logout ) : null;
 
     return (
