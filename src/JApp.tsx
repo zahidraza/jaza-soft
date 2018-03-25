@@ -13,7 +13,7 @@ import createAppReducer, { AppState } from "./reducer";
 import JAppRoutes from "./JAppRoutes";
 import TranslationProvider from "./i18n/TranslationProvider";
 import JAppSaga from "./sideEffect/saga";
-
+import Login from "./mui/auth/Login";
 import { FnAuthClient, FnRestClient } from "./rest";
 import { DataType } from "./types";
 
@@ -82,20 +82,17 @@ class JApp extends React.Component<Props, {}> {
 
     sagaMiddleware.run(saga);
     // const logoutButton = authClient ? React.createElement(logout ) : null;
-
+    const login = loginPage || Login;
     return (
       <Provider store={store}>
         <TranslationProvider messages={messages}>
           <ConnectedRouter history={routerHistory}>
             <Switch>
-              {loginPage && (
-                <Route
-                  exact
-                  path="/login"
-                  render={({ location }) =>
-                    React.createElement(loginPage, { location, appName, theme })}
-                />
-              )}
+              <Route
+                exact
+                path="/login"
+                render={({location}) => React.createElement(login, {location, appName, theme})}
+              />
               <Route
                 path="/"
                 render={routeProps => (

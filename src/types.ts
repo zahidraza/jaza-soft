@@ -6,8 +6,8 @@ export interface DataType {
 }
 
 export interface Param {
-  username: string
-  password: string
+  username?: string
+  password?: string
   appId?: string
 }
 

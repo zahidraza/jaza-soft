@@ -25,7 +25,7 @@ export default {
   },
   plugins: [
     builtins(),
-    nodeResolve({ jsnext: true, main: true, browser: true }),
+    nodeResolve({jsnext: true, browser: true}),
     commonjs({
       exclude: ['node_modules/rollup-plugin-node-globals/**'],
       namedExports: {
@@ -39,7 +39,11 @@ export default {
         "node_modules/prop-types/index.js": ["func", "string", "bool", "number", "object"],
         "node_modules/redux-saga/effects": ["AllEffect", "GenericAllEffect"],
         "node_modules/material-ui/styles/index.js": ["createMuiTheme","MuiThemeProvider", "withStyles", "WithStyles","Theme"],
-        "node_modules/material-ui/List/index.js": ["ListItem", "ListItemIcon", "ListItemText"]
+        "node_modules/material-ui/List/index.js": ["ListItem", "ListItemIcon", "ListItemText"],
+        "node_modules/material-ui/Form/index.js": ["FormControl", "FormHelperText"],
+        "node_modules/material-ui/Input/index.js": ["InputLabel"],
+        "node_modules/material-ui/Card/index.js": ["CardActions"],
+        "node_modules/material-ui/Progress/index.js": ["CircularProgress"],
       }
     }),
     globals(),

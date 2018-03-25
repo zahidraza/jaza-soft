@@ -4,8 +4,8 @@ export const LOGIN_FAILURE = 'JS/LOGIN_FAILURE'
 export const LOGIN_SUCCESS = 'JS/LOGIN_SUCCESS'
 
 export interface LoginPayload {
-  username: string
-  password: string
+  username?: string
+  password?: string
   appId?: string
 }
 

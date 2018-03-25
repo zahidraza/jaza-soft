@@ -29,6 +29,7 @@ const authSaga = (authClient: FnAuthClient) => {
     const { type } = action
     switch (type) {
       case AuthActions.LOGIN: {
+        console.log('Inside Auth Saga...')
         try {
           const loginAction = action as AuthActions.LoginAction
           yield put({ type: AuthActions.LOGIN_PROGRESS })
