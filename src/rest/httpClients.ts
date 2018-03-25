@@ -12,9 +12,7 @@ export const createOAuth2Client = (
   oauthBaseUrl: string,
   basicAuthorization: string
 ): FnAuthClient => (type: AuthType, params?: AuthParam | UserCheckParam) => {
-  console.log({ oauthBaseUrl, basicAuthorization })
   if (type === AuthType.AUTH_LOGIN) {
-    console.log('inside auth Client...')
     const payload = params as Param
     if (!payload.username || !payload.password) {
       return Promise.reject(
@@ -22,8 +20,6 @@ export const createOAuth2Client = (
           AuthType.AUTH_LOGIN
       )
     }
-    console.log(!basicAuthorization)
-    console.log(!basicAuthorization || !localStorage.basicAuthorization)
     if (!(basicAuthorization || localStorage.basicAuthorization)) {
       return Promise.reject(
         'basicAuthorization should be passed to authClient or set in localStorage with key = "basicAuthorization"'
@@ -38,7 +34,6 @@ export const createOAuth2Client = (
         Authorization: basicAuthorization || localStorage.basicAuthorization
       }
     }
-    console.log(config)
     return axios.request<any>(config).then(response => {
       if (response.status < 200 || response.status >= 300) {
         throw new Error(response.statusText)
