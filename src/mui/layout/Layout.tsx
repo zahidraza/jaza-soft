@@ -1,20 +1,19 @@
 import * as React from "react";
 
 import classNames from "classnames";
-import Drawer from "material-ui/Drawer";
-import AppBar from "material-ui/AppBar";
-import Toolbar from "material-ui/Toolbar";
-import List, { ListItem, ListItemIcon, ListItemText }  from "material-ui/List";
-import { MenuItem } from "material-ui/Menu";
-import Typography from "material-ui/Typography";
-import TextField from "material-ui/TextField";
-import Divider from "material-ui/Divider";
-import IconButton from "material-ui/IconButton";
-import MenuIcon from "material-ui-icons/Menu";
-import ChevronLeftIcon from "material-ui-icons/ChevronLeft";
-import ChevronRightIcon from "material-ui-icons/ChevronRight";
-import InboxIcon from 'material-ui-icons/Inbox';
-import DraftsIcon from 'material-ui-icons/Drafts';
+import Drawer from "@material-ui/core/Drawer";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import { List, ListItem, ListItemIcon, ListItemText, MenuItem }  from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
 import {
   MuiThemeProvider,
   createMuiTheme,
@@ -23,7 +22,7 @@ import {
   Theme,
   StyledComponentProps,
   StyleRules
-} from "material-ui/styles";
+} from "@material-ui/core/styles";
 
 import Menu from "./Menu";
 import {MenuItems} from "../../types";

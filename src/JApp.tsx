@@ -45,7 +45,9 @@ export interface Props {
   catchAll?: React.ComponentType<any>;
 }
 
-class JApp extends React.Component<Props, {}> {
+
+class JApp extends React.Component<Props> {
+
   render(): JSX.Element {
     const {
       appName,
@@ -66,6 +68,8 @@ class JApp extends React.Component<Props, {}> {
       logout,
       catchAll
     } = this.props;
+
+    
 
     const saga = function* rootSaga() {
       yield all([JAppSaga(restClient, authClient), ...customSagas].map(fork));

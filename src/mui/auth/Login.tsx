@@ -23,16 +23,49 @@ import {
   StyledComponentProps,
   WithStyles,
   withStyles
-} from "material-ui/styles";
-import Card, { CardActions } from "material-ui/Card";
-import Button from "material-ui/Button";
-import Input, { InputLabel } from "material-ui/Input";
-import { FormControl, FormHelperText } from "material-ui/Form";
+} from "@material-ui/core/styles";
+import {Card, CardActions, Input, InputLabel, FormControl, FormHelperText } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+// import Input, { InputLabel } from "@material-ui/core/Input";
+// import { FormControl, FormHelperText } from "@material-ui/core/Form";
+
+// const style = (
+//   theme: Theme
+// ): StyleRules<"main" | "card" | "avatar" | "form" | "input" | "container" | "formControl"> => ({
+//   main: {
+//     display: "flex",
+//     flexDirection: "column",
+//     minHeight: "100vh",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     backgroundColor: theme.palette.primary.main
+//   },
+//   card: {
+//     minWidth: 300
+//   },
+//   avatar: {
+//     margin: "1em",
+//     textAlign: "center "
+//   },
+//   form: {
+//     padding: "0 1em 1em 1em"
+//   },
+//   input: {
+//     display: "flex"
+//   },
+//   container: {
+//     display: "flex",
+//     flexWrap: "wrap"
+//   },
+//   formControl: {
+//     margin: theme.spacing.unit
+//   }
+// });
 
 const style = (
   theme: Theme
-): StyleRules<"main" | "card" | "avatar" | "form" | "input" | "container" | "formControl"> => ({
-  main: {
+): StyleRules<"main" | "card" | "container" | "formControl" > => ({
+    main: {
     display: "flex",
     flexDirection: "column",
     minHeight: "100vh",
@@ -42,16 +75,6 @@ const style = (
   },
   card: {
     minWidth: 300
-  },
-  avatar: {
-    margin: "1em",
-    textAlign: "center "
-  },
-  form: {
-    padding: "0 1em 1em 1em"
-  },
-  input: {
-    display: "flex"
   },
   container: {
     display: "flex",
@@ -116,9 +139,7 @@ export interface PropsFromDispatch {
   login: typeof loginAction;
 }
 
-export type StyledProps = WithStyles<
-  "main" | "card" | "avatar" | "form" | "input" | "container" | "formControl"
->;
+export type StyledProps = WithStyles<"main" | "card" | "container" | "formControl">;
 
 export type Props = OwnProps & PropsFromState & PropsFromDispatch & StyledProps;
 

@@ -1,8 +1,8 @@
 import * as React from "react";
 
 import {withRouter, RouteComponentProps} from "react-router-dom";
-import { ListItem, ListItemIcon, ListItemText }  from "material-ui/List";
-import TocIcon from 'material-ui-icons/Toc';
+import { ListItem, ListItemIcon, ListItemText }  from "@material-ui/core";
+import TocIcon from '@material-ui/icons/Toc';
 
 export interface Props extends RouteComponentProps<any> {
   to?: string,

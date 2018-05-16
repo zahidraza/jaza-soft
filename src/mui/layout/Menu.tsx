@@ -1,11 +1,11 @@
 import * as React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
-import List from "material-ui/List";
-import Collapse from "material-ui/transitions/Collapse";
-import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
-import {Theme, WithStyles, withStyles, StyledComponentProps} from "material-ui/styles";
+import List from "@material-ui/core/List";
+import Collapse from "@material-ui/core/Collapse";
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import {Theme, WithStyles, withStyles, StyledComponentProps} from "@material-ui/core/styles";
 
 import { Payload } from "../../action/resourceAction";
 import MenuItem from "./MenuItem";

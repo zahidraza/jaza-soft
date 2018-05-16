@@ -6,7 +6,7 @@ import {AppState} from "../../reducer";
 import {DataType} from "../../types";
 import { login as loginAction } from "../../action/authAction";
 
-import { StyleRules, Theme, WithStyles, withStyles, StyledComponentProps } from "material-ui/styles";
+import { StyleRules, Theme, WithStyles, withStyles, StyledComponentProps } from "@material-ui/core/styles";
 
 
 const styles = (theme: Theme): StyleRules<"main"> => ({
